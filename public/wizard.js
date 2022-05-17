@@ -29,22 +29,19 @@ function nextPrev(n) {
     x[currentTab].style.display = "none";
     currentTab = currentTab + n;
     if (currentTab >= x.length) {
-        // document.getElementById("regForm").submit();
-        // return false;
-        //alert("sdf");
-        document.getElementById("nextprevious").style.display = "none";
-        document.getElementById("all-steps").style.display = "none";
-        document.getElementById("register").style.display = "none";
-        document.getElementById("text-message").style.display = "block";
-
-
-
+        document.getElementById("regForm").submit();
+        return false;
+        alert("sdf");
+        //document.getElementById("nextprevious").style.display = "none";
+        //document.getElementById("all-steps").style.display = "none";
+        //document.getElementById("register").style.display = "none";
+        //document.getElementById("text-message").style.display = "block";
 
     }
     showTab(currentTab);
 }
 
-function validateForm() {
+/*function validateForm() {
     var x, y, i, valid = true;
     x = document.getElementsByClassName("tab");
     y = x[currentTab].getElementsByTagName("input");
@@ -56,7 +53,7 @@ function validateForm() {
     }
     if (valid) { document.getElementsByClassName("step")[currentTab].className += " finish"; }
     return valid;
-}
+}*/
 
 function fixStepIndicator(n) {
     var i, x = document.getElementsByClassName("step");

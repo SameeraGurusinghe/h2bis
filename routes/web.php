@@ -22,11 +22,13 @@ Route::get('/', function () {
 
 Route::group(['middleware' =>Authenticate::class ], function () {
     Route::get('/dashboard', [LogAuthController::class,"dashboard"]);
+    Route::get('/delete/{id}', [LogAuthController::class,"delete"]);
     Route::get('/logout', [LogAuthController::class,"logout"]);
 });
 
 Route::get('/login', [LogAuthController::class,"loginView"])->name("login");
 Route::get('/register', [LogAuthController::class,"registerView"]);
 Route::get('/createSupplier', [LogAuthController::class,"createSupplierView"]);
+Route::post('/createSuppliers', [LogAuthController::class,"createSupplierView2"]);
 Route::post('/do-login', [LogAuthController::class,"doLogin"]);
 Route::post('/do-register', [LogAuthController::class,"doRegister"]);

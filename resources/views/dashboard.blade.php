@@ -18,6 +18,7 @@
     $(document).ready( function () {
       $('#table_id').DataTable();
     } );
+    
   </script>
 
   <style>
@@ -104,29 +105,23 @@
                   </tr>
               </thead>
               <tbody>
+                @foreach($supplier_info as $data)
                   <tr>
-                      <td>Row 1 Data 1</td>
-                      <td>Row 1 Data 2</td>
-                      <td>Row 1 Data 1</td>
-                      <td>Row 1 Data 2</td>
-                      <td>Row 1 Data 1</td>
-                      <td>Row 1 Data 2</td>
-                      <td>jj</td>
+                      <td>{{$data->suppliers_type}}</td>
+                      <td>{{$data->supplier_code}}</td>
+                      <td>{{$data->supplier_name}}</td>
+                      <td>{{$data->reference_number}}</td>
+                      <td>{{$data->mobile_number}}</td>
+                      <td>{{$data->email}}</td>
+                      <td>
+                      <a href=""><img src="/icons/eye.png" style="width:20px; height:20px;"></a>
+                      <a href=""><img src="/icons/pen.png" style="width:20px; height:20px;"></a>
+                      <a href="delete/{{ $data->id }}"><img src="/icons/remove.png" style="width:20px; height:20px;"></a>
+                      </td>
                   </tr>
-                  <tr>
-                      <td>Row 2 Data 1</td>
-                      <td>Row 2 Data 2</td>
-                      <td>Row 1 Data 1</td>
-                      <td>Row 1 Data 2</td>
-                      <td>Row 1 Data 1</td>
-                      <td>Row 1 Data 2</td>
-                      <td>Row 1 Data 1</td>
-                  </tr>
+                @endforeach
               </tbody>
           </table>
-            *******
-          *****************************************
-
 
           </div>
         </div>

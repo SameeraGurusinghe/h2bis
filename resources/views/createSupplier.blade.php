@@ -75,7 +75,14 @@
         <div class="row d-flex justify-content-center align-items-center">
         <div class="col-md-12">
 
-            <form id="regForm">
+        @foreach($errors->all() as $error)
+          <div class="alert alert-danger" role="alert">
+            {{$error}}
+          </div>
+        @endforeach
+
+            <form id="regForm" action="{{url('/createSuppliers')}}" method="POST" enctype="multipart/form-data">
+            @csrf
 
                 <!--Tab 01 start-->
                 <!--supplier detail start-->
@@ -89,17 +96,20 @@
                     <div class="row">
                         <div class="col">
                             <h6>Supplier Code:*</h6>
-                            <input type="text" class="form-control">
+                            <?php
+                            $random = substr(md5(mt_rand()), 0, 8);
+                            echo "<input type='text' class='form-control' value='#$random' name='supp_code' readonly>"
+                            ?>
                         </div>
 
                         <div class="col">
                             <h6>Reference Number:</h6>
-                            <input type="text" class="form-control">
+                            <input type="text" class="form-control" name="ref_number">
                         </div>
 
                         <div class="col">
                             <h6>Supplier Type:*</h6>
-                            <select class="form-control">
+                            <select class="form-control" name="sup_type">
                                 <option selected>Select</option>
                                 @foreach($supp_type as $data)
                                 <option value="{{$data->name}}">{{$data->name}}</option>
@@ -112,12 +122,12 @@
                     <div class="row">
                         <div class="col-md-4">
                             <h6>Supplier Name:*</h6>
-                            <input type="text" class="form-control">
+                            <input type="text" class="form-control" name="supp_name">
                         </div>
 
                         <div class="col-md-4">
                             <h6>Cheque Writer's Name:</h6>
-                            <input type="text" class="form-control">
+                            <input type="text" class="form-control" name="cheque_name">
                         </div>
 
                         <div class="col-md-4"></div>
@@ -134,7 +144,7 @@
                             <h6>Mobile Number:*</h6>
                             <div class="form-group row">
                                 <div class="col-md-4">
-                                    <select class="form-control">
+                                    <select class="form-control" name="mob_number_1">
                                         <option selected>+94</option>
                                         @foreach($countrycode as $data)
                                         <option value="{{$data->phonecode}}">{{$data->phonecode}}</option>
@@ -143,7 +153,7 @@
                                 </div>
 
                                 <div class="col-md-8">
-                                    <input type="text" class="form-control">
+                                    <input type="text" class="form-control" name="mob_number_2">
                                 </div>
                             </div>
                             <br>
@@ -153,7 +163,7 @@
                             <h6>FAX:*</h6>
                             <div class="form-group row">
                                 <div class="col-md-4">
-                                    <select class="form-control">
+                                    <select class="form-control" name="fax_1">
                                         <option selected>+94</option>
                                         @foreach($countrycode as $data)
                                         <option value="{{$data->phonecode}}">{{$data->phonecode}}</option>
@@ -162,7 +172,7 @@
                                 </div>
 
                                 <div class="col-md-8">
-                                    <input type="text" class="form-control">
+                                    <input type="text" class="form-control" name="fax_2">
                                 </div>
                             </div>
                             <br>
@@ -174,7 +184,7 @@
                             <h6>Land Line Number:*</h6>
                             <div class="form-group row">
                                 <div class="col-md-4">
-                                    <select class="form-control">
+                                    <select class="form-control" name="land_number_1">
                                         <option selected>+94</option>
                                         @foreach($countrycode as $data)
                                         <option value="{{$data->phonecode}}">{{$data->phonecode}}</option>
@@ -183,7 +193,7 @@
                                 </div>
 
                                 <div class="col-md-8">
-                                    <input type="text" class="form-control">
+                                    <input type="text" class="form-control" name="land_number_2">
                                 </div>
                             </div>
                             <br>
@@ -195,7 +205,7 @@
                             <div class="col">
                                 <div class="form-group row">
                                     <div class="col-md-12">
-                                        <input type="text" class="form-control">
+                                        <input type="text" class="form-control" name="email">
                                     </div>
                                 </div>
                                 <br>
@@ -215,42 +225,42 @@
                         <div class="form-group row">
                             <label class="col-md-5 col-form-label" style="font-size:16px;">Address Line 01:*</label>
                             <div class="col-md-7">
-                                <input type="text" class="form-control" id="add_1_1">
+                                <input type="text" class="form-control" id="add_1_1" name="ad_line_1">
                             </div>
                         </div><br>
 
                         <div class="form-group row">
                             <label class="col-md-5 col-form-label" style="font-size:16px;">Address Line 02:</label>
                             <div class="col-md-7">
-                                <input type="text" class="form-control" id="add_2_1">
+                                <input type="text" class="form-control" id="add_2_1" name="ad_line_2">
                             </div>
                         </div><br>
 
                         <div class="form-group row">
                             <label class="col-md-5 col-form-label" style="font-size:16px;">Address Line 03:</label>
                             <div class="col-md-7">
-                                <input type="text" class="form-control" id="add_3_1">
+                                <input type="text" class="form-control" id="add_3_1" name="ad_line_3">
                             </div>
                         </div><br>
 
                         <div class="form-group row">
                             <label class="col-md-5 col-form-label" style="font-size:16px;">City:</label>
                             <div class="col-md-7">
-                                <input type="text" class="form-control" id="add_4_1">
+                                <input type="text" class="form-control" id="add_4_1" name="city">
                             </div>
                         </div><br>
 
                         <div class="form-group row">
                             <label class="col-md-5 col-form-label" style="font-size:16px;">ZIP/ Postal Code:</label>
                             <div class="col-md-7">
-                                <input type="text" class="form-control" id="add_5_1">
+                                <input type="text" class="form-control" id="add_5_1" name="zip_post_code">
                             </div>
                         </div><br>
                         
                         <div class="form-group row">
                             <label class="col-md-5 col-form-label" style="font-size:16px;">Country:</label>
                             <div class="col-md-7">
-                                <select class="form-control" id="add_6_1">
+                                <select class="form-control" id="add_6_1" name="country">
                                     <option selected>Sri Lanka</option>
                                     @foreach($countrycode as $data)
                                     <option value="{{$data->nicename}}">{{$data->nicename}}</option>
@@ -262,7 +272,8 @@
                         <div class="form-group row">
                             <label class="col-md-5 col-form-label" style="font-size:16px;">State/ Province:</label>
                             <div class="col-md-7">
-                                <input type="text" class="form-control" id="add_7_1">
+                                <input type="text" class="form-control" id="add_7_1" name="state_province">
+                                <input type="hidden" name="billing" value="1">
                             </div>
                         </div>
 
@@ -280,49 +291,50 @@
                         <div class="form-group row">
                         <label class="col-md-5 col-form-label" style="font-size:16px;">Address Line 01:*</label>
                             <div class="col-md-7">
-                                <input type="text" class="form-control" id="add_1_2">
+                                <input type="text" class="form-control" id="add_1_2" name="s_ad_line_1">
                             </div>
                         </div><br>
 
                         <div class="form-group row">
                             <label class="col-md-5 col-form-label" style="font-size:16px;">Address Line 02:</label>
                             <div class="col-md-7">
-                                <input type="text" class="form-control" id="add_2_2">
+                                <input type="text" class="form-control" id="add_2_2" name="s_ad_line_2">
                             </div>
                         </div><br>
 
                         <div class="form-group row">
                             <label class="col-md-5 col-form-label" style="font-size:16px;">Address Line 03:</label>
                             <div class="col-md-7">
-                                <input type="text" class="form-control" id="add_3_2">
+                                <input type="text" class="form-control" id="add_3_2" name="s_ad_line_3">
                             </div>
                         </div><br>
 
                         <div class="form-group row">
                             <label class="col-md-5 col-form-label" style="font-size:16px;">City:</label>
                             <div class="col-md-7">
-                                <input type="text" class="form-control" id="add_4_2">
+                                <input type="text" class="form-control" id="add_4_2" name="s_city">
                             </div>
                         </div><br>
 
                         <div class="form-group row">
                             <label class="col-md-5 col-form-label" style="font-size:16px;">ZIP/ Postal Code:</label>
                             <div class="col-md-7">
-                                <input type="text" class="form-control" id="add_5_2">
+                                <input type="text" class="form-control" id="add_5_2" name="s_zip_post_code">
                             </div>
                         </div><br>
                         
                         <div class="form-group row">
                             <label class="col-md-5 col-form-label" style="font-size:16px;">Country:</label>
                             <div class="col-md-7">
-                            <input type="text" class="form-control" id="add_6_2">
+                            <input type="text" class="form-control" id="add_6_2" name="s_country">
                             </div>
                         </div><br>
 
                         <div class="form-group row">
                             <label class="col-md-5 col-form-label" style="font-size:16px;">State/ Province:</label>
                             <div class="col-md-7">
-                                <input type="text" class="form-control" id="add_7_2">
+                                <input type="text" class="form-control" id="add_7_2" name="s_state_province">
+                                <input type="hidden" name="s_shipping" value="2">
                             </div>
                         </div>
                     </div>
@@ -345,17 +357,17 @@
                     <div class="row">
                         <div class="col">
                             <h6>Credit Limit:</h6>
-                            <input type="text" class="form-control">
+                            <input type="text" class="form-control" name="credit_limit">
                         </div>
 
                         <div class="col">
                             <h6>Credit Period(Days):</h6>
-                            <input type="text" class="form-control">
+                            <input type="text" class="form-control" name="credit_period">
                         </div>
 
                         <div class="col">
                             <h6>Privilages Discount(%):</h6>
-                            <input type="text" class="form-control">
+                            <input type="text" class="form-control" name="privi_discount">
                         </div>
                     </div>
                     <br>
@@ -366,7 +378,7 @@
                     <div class="row">
                         <div class="col-md-4">
                             <h6>Bank Name:</h6>
-                            <select class="form-control" id="bank_name">
+                            <select class="form-control" id="bank_name" name="bank_name">
                             @foreach($bank_name as $data)
                             <option value="{{$data->name}}">{{$data->name}}</option>
                             @endforeach
@@ -375,7 +387,7 @@
 
                         <div class="col-md-4">
                             <h6>Branch:</h6>
-                            <select class="form-control" id="branch_name">
+                            <select class="form-control" id="branch_name" name="branch_name">
                             @foreach($branch_name as $data)
                             <option value="{{$data->name}}">{{$data->name}}</option>
                             @endforeach
@@ -384,7 +396,7 @@
 
                         <div class="col-md-4">
                             <h6>Account Holder's Name:</h6>
-                            <input type="text" class="form-control" id="acc_holder_name">
+                            <input type="text" class="form-control" id="acc_holder_name" name="acc_holder_name">
                         </div>
                     </div>
                     <br>
@@ -392,7 +404,7 @@
                     <div class="row">
                         <div class="col-md-4">
                             <h6>Account Number:*</h6>
-                            <input type="text" class="form-control" id="acc_number">
+                            <input type="text" class="form-control" id="acc_number" name="acc_number">
                         </div>
 
                         <div class="col-md-4"></div>
@@ -422,26 +434,6 @@
                     <!--table end-->
 
                 </div>
-                
-                
-                <!--<script type="text/javascript">
-                    $('#tmp_save').on('click', function() {
-                    var bank_name=$('#bank_name').val();
-                    var branch_name=$('#branch_name').val();
-                    var acc_holder_name=$('#acc_holder_name').val();
-                    var acc_number=$('#acc_number').val();
-                    var count = $('#tmp_data_save_table tr').length;
-                    if(bank_name!="" && branch_name !="" && acc_holder_name !="" && acc_number !=""){
-                    $('#tmp_data_save_table tbody').append('<tr class="child"><td>'+bank_name+'</td><td>'+branch_name+'</td><td>'+acc_holder_name+'</td><td>'+acc_number+'</td><td><a href="javascript:void(0);" class="editData"><img src="/icons/pen.png"></a><a href="javascript:void(0);" class="remCF1"><img src="/icons/remove.png"></a></td></tr>');
-                    }
-                    });
-                    $(document).on('click','.remCF1',function(){
-                    $(this).parent().parent().remove();
-                    $('#tmp_data_save_table tbody tr').each(function(i){            
-                    $($(this).find('td')[0]).html(i+1);          
-                    });
-                    });
-                </script> -->
 
                 <script type="text/javascript">  
                     $("form").submit(function(e){  
@@ -517,9 +509,6 @@
                     });  
                     
                 </script>
-
-
-
 
                 <!--supplier detail end-->
                 <!--Tab 02 end-->

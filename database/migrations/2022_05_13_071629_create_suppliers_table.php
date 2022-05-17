@@ -17,6 +17,7 @@ class CreateSuppliersTable extends Migration
             $table->integer('id', true);
             $table->string('supplier_code', 45)->nullable();
             $table->string('reference_number', 45)->nullable();
+            $table->string('suppliers_type', 250)->nullable();
             $table->string('supplier_name', 250)->nullable();
             $table->string('cheque_writers_name', 250)->nullable();
             $table->integer('mobile_number')->nullable();
