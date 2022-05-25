@@ -52,7 +52,7 @@
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">H2bis - Supplier</a>
+    <a class="navbar-brand" href="#">Suppliers Overview</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -88,7 +88,7 @@
         <div class="row"><hr/>
 
           <div class="flex-parent jc-center">
-            <a href="{{url('createSupplier')}}" class="btn btn-light"><img src="/icons/plus.png" style="width:40px; height:40px;"></a>
+            <a href="{{url('supplier/create-supplier')}}" class="btn btn-light"><img src="/icons/plus.png" style="width:40px; height:40px;"></a>
           </div>
           <hr/>
 
@@ -104,6 +104,7 @@
                       <th>Action</th>
                   </tr>
               </thead>
+
               <tbody>
                 @foreach($supplier_info as $data)
                   <tr>
@@ -114,9 +115,21 @@
                       <td>{{$data->mobile_number}}</td>
                       <td>{{$data->email}}</td>
                       <td>
-                      <a href=""><img src="/icons/eye.png" style="width:20px; height:20px;"></a>
-                      <a href=""><img src="/icons/pen.png" style="width:20px; height:20px;"></a>
-                      <a href="delete/{{ $data->id }}"><img src="/icons/remove.png" style="width:20px; height:20px;"></a>
+                        <div>
+                          <div style="float: left;">
+                              <a href=""><img src="/icons/eye.png" style="width:20px; height:20px;" title="View"></a>
+                          </div>
+                          
+                          <div style="float: right;">   
+                              <a href="supplier/edit/{{ $data->id }}"><img src="/icons/pen.png" style="width:20px; height:20px;" title='Edit'></a>
+                          </div>
+
+                          <div style="text-align:center;"> 
+                              <form method="GET" action="{{ route('supplier.delete', $data->id) }}">
+                                <a type="submit" class="show_confirm" data-toggle="tooltip" title='Delete'><img src="/icons/remove.png" style="width:20px; height:20px;"></a>                   
+                              </form>
+                          </div>
+                        </div>
                       </td>
                   </tr>
                 @endforeach
@@ -128,6 +141,29 @@
       </div>
     </div>
   </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script>
+<script type="text/javascript">
+ 
+     $('.show_confirm').click(function(event) {
+          var form =  $(this).closest("form");
+          var name = $(this).data("name");
+          event.preventDefault();
+          swal({
+              title: "Are you sure you want to delete selected supplier from system?",
+              text: "Caution: It cannot be undone.",
+              icon: "warning",
+              buttons: true,
+              dangerMode: true,
+          })
+          .then((willDelete) => {
+            if (willDelete) {
+              form.submit();
+            }
+          });
+      });
+  
+</script>
     
 </body>
 </html>

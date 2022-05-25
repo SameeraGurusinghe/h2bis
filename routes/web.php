@@ -21,14 +21,16 @@ Route::get('/', function () {
 
 
 Route::group(['middleware' =>Authenticate::class ], function () {
-    Route::get('/dashboard', [LogAuthController::class,"dashboard"]);
-    Route::get('/delete/{id}', [LogAuthController::class,"delete"]);
+    Route::get('/index', [LogAuthController::class,"index"])->name("supplier.index");
+    Route::get('/supplier/delete/{id}', [LogAuthController::class,"deleteSupplier"])->name("supplier.delete");
+    Route::get('/supplier/edit/{id}', [LogAuthController::class,"editSupplier"]);
+    Route::post('/supplier/update/{id}', [LogAuthController::class,"updateSupplier"]);
     Route::get('/logout', [LogAuthController::class,"logout"]);
 });
 
 Route::get('/login', [LogAuthController::class,"loginView"])->name("login");
 Route::get('/register', [LogAuthController::class,"registerView"]);
-Route::get('/createSupplier', [LogAuthController::class,"createSupplierView"]);
-Route::post('/createSuppliers', [LogAuthController::class,"createSupplierView2"]);
+Route::get('/supplier/create-supplier', [LogAuthController::class,"supplierView"]);
+Route::post('/supplier/make-a-supplier', [LogAuthController::class,"makeSupplier"]);
 Route::post('/do-login', [LogAuthController::class,"doLogin"]);
 Route::post('/do-register', [LogAuthController::class,"doRegister"]);

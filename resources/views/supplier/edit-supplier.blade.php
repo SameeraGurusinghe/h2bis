@@ -5,18 +5,15 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>H2bis - Supplier</title>
+  <title>Edit Supplier Details</title>
 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
-  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
-  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
-  <script type="text/javascript" src="index.js"></script>
-  <script type="text/javascript" src="wizard.js"></script>
-  <link rel="stylesheet" href="wizard.css">
-
+  <script type="text/javascript" src="../index.js"></script>
+  <script type="text/javascript" src="../wizard.js"></script>
+  <link rel="stylesheet" href="../wizard.css">
 
   <script>
     function DataCopyFunction() {
@@ -36,7 +33,7 @@
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container-fluid">
-    <a class="navbar-brand" href="{{url('dashboard')}}">H2bis - Supplier</a>
+    <a class="navbar-brand" href="{{url('index')}}">Update Existing Supplier</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -81,7 +78,9 @@
           </div>
         @endforeach
 
-            <form id="regForm" action="{{url('/createSuppliers')}}" method="POST" enctype="multipart/form-data">
+            @foreach($supplier_info as $data)
+            <form id="regForm" action="{{url('/supplier/update/'.$data->id)}}" method="POST" enctype="multipart/form-data">
+            @endforeach
             @csrf
 
                 <!--Tab 01 start-->
@@ -93,24 +92,22 @@
                     <h4>Supplier Details</h4>
                     <hr>
 
+                    
                     <div class="row">
                         <div class="col">
                             <h6>Supplier Code:*</h6>
-                            <?php
-                            $random = substr(md5(mt_rand()), 0, 8);
-                            echo "<input type='text' class='form-control' value='#$random' name='supp_code' readonly>"
-                            ?>
+                            <input type="text" class="form-control" value="@foreach($supplier_info as $data){{$data->supplier_code}}@endforeach" name="supp_code" readonly>
                         </div>
 
                         <div class="col">
                             <h6>Reference Number:</h6>
-                            <input type="text" class="form-control" name="ref_number">
+                            <input type="text" class="form-control" value="@foreach($supplier_info as $data){{$data->reference_number}}@endforeach" name="ref_number">
                         </div>
 
                         <div class="col">
                             <h6>Supplier Type:*</h6>
                             <select class="form-control" name="sup_type">
-                                <option selected>Select</option>
+                                <option selected >@foreach($supplier_info as $data){{$data->suppliers_type}}@endforeach</option>
                                 @foreach($supp_type as $data)
                                 <option value="{{$data->name}}">{{$data->name}}</option>
                                 @endforeach
@@ -122,12 +119,12 @@
                     <div class="row">
                         <div class="col-md-4">
                             <h6>Supplier Name:*</h6>
-                            <input type="text" class="form-control" name="supp_name">
+                            <input type="text" class="form-control" name="supp_name" value="@foreach($supplier_info as $data){{$data->supplier_name}}@endforeach">
                         </div>
 
                         <div class="col-md-4">
                             <h6>Cheque Writer's Name:</h6>
-                            <input type="text" class="form-control" name="cheque_name">
+                            <input type="text" class="form-control" name="cheque_name" value="@foreach($supplier_info as $data){{$data->cheque_writers_name}}@endforeach">
                         </div>
 
                         <div class="col-md-4"></div>
@@ -145,7 +142,11 @@
                             <div class="form-group row">
                                 <div class="col-md-4">
                                     <select class="form-control" name="mob_number_1">
-                                        <option selected>+94</option>
+                                        <option selected>
+                                            @foreach($supplier_info as $data)
+                                            {{Str::substr($data->mobile_number, 0,3)}}
+                                            @endforeach
+                                        </option>
                                         @foreach($countrycode as $data)
                                         <option value="{{$data->phonecode}}">{{$data->phonecode}}</option>
                                         @endforeach
@@ -153,7 +154,7 @@
                                 </div>
 
                                 <div class="col-md-8">
-                                    <input type="text" class="form-control" name="mob_number_2">
+                                    <input type="text" class="form-control" name="mob_number_2" value="@foreach($supplier_info as $data){{Str::substr($data->mobile_number, -9)}}@endforeach">
                                 </div>
                             </div>
                             <br>
@@ -164,7 +165,12 @@
                             <div class="form-group row">
                                 <div class="col-md-4">
                                     <select class="form-control" name="fax_1">
-                                        <option selected>+94</option>
+                                        <option selected>
+                                            @foreach($supplier_info as $data)
+                                            {{Str::substr($data->fax, 0,3)}}
+                                            @endforeach
+                                        </option>
+
                                         @foreach($countrycode as $data)
                                         <option value="{{$data->phonecode}}">{{$data->phonecode}}</option>
                                         @endforeach
@@ -172,7 +178,7 @@
                                 </div>
 
                                 <div class="col-md-8">
-                                    <input type="text" class="form-control" name="fax_2">
+                                    <input type="text" class="form-control" name="fax_2" value="@foreach($supplier_info as $data){{Str::substr($data->fax, -9)}}@endforeach">
                                 </div>
                             </div>
                             <br>
@@ -185,7 +191,12 @@
                             <div class="form-group row">
                                 <div class="col-md-4">
                                     <select class="form-control" name="land_number_1">
-                                        <option selected>+94</option>
+                                        <option selected>
+                                            @foreach($supplier_info as $data)
+                                            {{Str::substr($data->land_line_number, 0,3)}}
+                                            @endforeach
+                                        </option>
+
                                         @foreach($countrycode as $data)
                                         <option value="{{$data->phonecode}}">{{$data->phonecode}}</option>
                                         @endforeach
@@ -193,7 +204,7 @@
                                 </div>
 
                                 <div class="col-md-8">
-                                    <input type="text" class="form-control" name="land_number_2">
+                                    <input type="text" class="form-control" name="land_number_2" value="@foreach($supplier_info as $data){{Str::substr($data->land_line_number, -9)}}@endforeach">
                                 </div>
                             </div>
                             <br>
@@ -205,7 +216,7 @@
                             <div class="col">
                                 <div class="form-group row">
                                     <div class="col-md-12">
-                                        <input type="text" class="form-control" name="email">
+                                        <input type="text" class="form-control" name="email" value="@foreach($supplier_info as $data){{$data->email}}@endforeach">
                                     </div>
                                 </div>
                                 <br>
@@ -225,35 +236,35 @@
                         <div class="form-group row">
                             <label class="col-md-5 col-form-label" style="font-size:16px;">Address Line 01:*</label>
                             <div class="col-md-7">
-                                <input type="text" class="form-control" id="add_1_1" name="ad_line_1">
+                                <input type="text" class="form-control" id="add_1_1" name="ad_line_1" value="@foreach($supplier_billing_address_info as $data){{$data->address_line_01}}@endforeach">
                             </div>
                         </div><br>
 
                         <div class="form-group row">
                             <label class="col-md-5 col-form-label" style="font-size:16px;">Address Line 02:</label>
                             <div class="col-md-7">
-                                <input type="text" class="form-control" id="add_2_1" name="ad_line_2">
+                                <input type="text" class="form-control" id="add_2_1" name="ad_line_2" value="@foreach($supplier_billing_address_info as $data){{$data->address_line_02}}@endforeach">
                             </div>
                         </div><br>
 
                         <div class="form-group row">
                             <label class="col-md-5 col-form-label" style="font-size:16px;">Address Line 03:</label>
                             <div class="col-md-7">
-                                <input type="text" class="form-control" id="add_3_1" name="ad_line_3">
+                                <input type="text" class="form-control" id="add_3_1" name="ad_line_3" value="@foreach($supplier_billing_address_info as $data){{$data->address_line_03}}@endforeach">
                             </div>
                         </div><br>
 
                         <div class="form-group row">
                             <label class="col-md-5 col-form-label" style="font-size:16px;">City:</label>
                             <div class="col-md-7">
-                                <input type="text" class="form-control" id="add_4_1" name="city">
+                                <input type="text" class="form-control" id="add_4_1" name="city" value="@foreach($supplier_billing_address_info as $data){{$data->city}}@endforeach">
                             </div>
                         </div><br>
 
                         <div class="form-group row">
                             <label class="col-md-5 col-form-label" style="font-size:16px;">ZIP/ Postal Code:</label>
                             <div class="col-md-7">
-                                <input type="text" class="form-control" id="add_5_1" name="zip_post_code">
+                                <input type="text" class="form-control" id="add_5_1" name="zip_post_code" value="@foreach($supplier_billing_address_info as $data){{$data->zip_postal_code}}@endforeach">
                             </div>
                         </div><br>
                         
@@ -261,7 +272,7 @@
                             <label class="col-md-5 col-form-label" style="font-size:16px;">Country:</label>
                             <div class="col-md-7">
                                 <select class="form-control" id="add_6_1" name="country">
-                                    <option selected>Sri Lanka</option>
+                                    <option selected>@foreach($supplier_billing_address_info as $data){{$data->country}}@endforeach</option>
                                     @foreach($countrycode as $data)
                                     <option value="{{$data->nicename}}">{{$data->nicename}}</option>
                                     @endforeach
@@ -272,7 +283,7 @@
                         <div class="form-group row">
                             <label class="col-md-5 col-form-label" style="font-size:16px;">State/ Province:</label>
                             <div class="col-md-7">
-                                <input type="text" class="form-control" id="add_7_1" name="state_province">
+                                <input type="text" class="form-control" id="add_7_1" name="state_province" value="@foreach($supplier_billing_address_info as $data){{$data->state}}@endforeach">
                                 <input type="hidden" name="billing" value="1">
                             </div>
                         </div>
@@ -291,49 +302,49 @@
                         <div class="form-group row">
                         <label class="col-md-5 col-form-label" style="font-size:16px;">Address Line 01:*</label>
                             <div class="col-md-7">
-                                <input type="text" class="form-control" id="add_1_2" name="s_ad_line_1">
+                                <input type="text" class="form-control" id="add_1_2" name="s_ad_line_1" value="@foreach($supplier_shipping_address_info as $data){{$data->address_line_01}}@endforeach">
                             </div>
                         </div><br>
 
                         <div class="form-group row">
                             <label class="col-md-5 col-form-label" style="font-size:16px;">Address Line 02:</label>
                             <div class="col-md-7">
-                                <input type="text" class="form-control" id="add_2_2" name="s_ad_line_2">
+                                <input type="text" class="form-control" id="add_2_2" name="s_ad_line_2" value="@foreach($supplier_shipping_address_info as $data){{$data->address_line_02}}@endforeach">
                             </div>
                         </div><br>
 
                         <div class="form-group row">
                             <label class="col-md-5 col-form-label" style="font-size:16px;">Address Line 03:</label>
                             <div class="col-md-7">
-                                <input type="text" class="form-control" id="add_3_2" name="s_ad_line_3">
+                                <input type="text" class="form-control" id="add_3_2" name="s_ad_line_3" value="@foreach($supplier_shipping_address_info as $data){{$data->address_line_03}}@endforeach">
                             </div>
                         </div><br>
 
                         <div class="form-group row">
                             <label class="col-md-5 col-form-label" style="font-size:16px;">City:</label>
                             <div class="col-md-7">
-                                <input type="text" class="form-control" id="add_4_2" name="s_city">
+                                <input type="text" class="form-control" id="add_4_2" name="s_city" value="@foreach($supplier_shipping_address_info as $data){{$data->city}}@endforeach">
                             </div>
                         </div><br>
 
                         <div class="form-group row">
                             <label class="col-md-5 col-form-label" style="font-size:16px;">ZIP/ Postal Code:</label>
                             <div class="col-md-7">
-                                <input type="text" class="form-control" id="add_5_2" name="s_zip_post_code">
+                                <input type="text" class="form-control" id="add_5_2" name="s_zip_post_code" value="@foreach($supplier_shipping_address_info as $data){{$data->zip_postal_code}}@endforeach">
                             </div>
                         </div><br>
                         
                         <div class="form-group row">
                             <label class="col-md-5 col-form-label" style="font-size:16px;">Country:</label>
                             <div class="col-md-7">
-                            <input type="text" class="form-control" id="add_6_2" name="s_country">
+                            <input type="text" class="form-control" id="add_6_2" name="s_country" value="@foreach($supplier_shipping_address_info as $data){{$data->country}}@endforeach">
                             </div>
                         </div><br>
 
                         <div class="form-group row">
                             <label class="col-md-5 col-form-label" style="font-size:16px;">State/ Province:</label>
                             <div class="col-md-7">
-                                <input type="text" class="form-control" id="add_7_2" name="s_state_province">
+                                <input type="text" class="form-control" id="add_7_2" name="s_state_province" value="@foreach($supplier_shipping_address_info as $data){{$data->state}}@endforeach">
                                 <input type="hidden" name="s_shipping" value="2">
                             </div>
                         </div>
@@ -357,17 +368,17 @@
                     <div class="row">
                         <div class="col">
                             <h6>Credit Limit:</h6>
-                            <input type="text" class="form-control" name="credit_limit">
+                            <input type="text" class="form-control" name="credit_limit" value="@foreach($supplier_bank_info as $data){{$data->credit_limit}}@endforeach">
                         </div>
 
                         <div class="col">
                             <h6>Credit Period(Days):</h6>
-                            <input type="text" class="form-control" name="credit_period">
+                            <input type="text" class="form-control" name="credit_period" value="@foreach($supplier_bank_info as $data){{$data->credit_period}}@endforeach">
                         </div>
 
                         <div class="col">
                             <h6>Privilages Discount(%):</h6>
-                            <input type="text" class="form-control" name="privi_discount">
+                            <input type="text" class="form-control" name="privi_discount" value="@foreach($supplier_bank_info as $data){{$data->privileges_discount}}@endforeach">
                         </div>
                     </div>
                     <br>
@@ -379,24 +390,26 @@
                         <div class="col-md-4">
                             <h6>Bank Name:</h6>
                             <select class="form-control" id="bank_name" name="bank_name">
-                            @foreach($bank_name as $data)
-                            <option value="{{$data->name}}">{{$data->name}}</option>
-                            @endforeach
-                        </select>
+                                <option selected>@foreach($supplier_payment_info as $data){{$data->bank_name}}@endforeach</option>
+                                @foreach($bank_name as $data)
+                                    <option value="{{$data->name}}">{{$data->name}}</option>
+                                @endforeach
+                            </select>
                         </div>
 
                         <div class="col-md-4">
                             <h6>Branch:</h6>
                             <select class="form-control" id="branch_name" name="branch_name">
-                            @foreach($branch_name as $data)
-                            <option value="{{$data->name}}">{{$data->name}}</option>
-                            @endforeach
-                        </select>
+                                <option selected>@foreach($supplier_payment_info as $data){{$data->branch_name}}@endforeach</option>
+                                @foreach($branch_name as $data)
+                                    <option value="{{$data->name}}">{{$data->name}}</option>
+                                @endforeach
+                            </select>
                         </div>
 
                         <div class="col-md-4">
                             <h6>Account Holder's Name:</h6>
-                            <input type="text" class="form-control" id="acc_holder_name" name="acc_holder_name">
+                            <input type="text" class="form-control" id="acc_holder_name" name="acc_holder_name" value="@foreach($supplier_payment_info as $data){{$data->account_holder_name}}@endforeach">
                         </div>
                     </div>
                     <br>
@@ -404,7 +417,7 @@
                     <div class="row">
                         <div class="col-md-4">
                             <h6>Account Number:*</h6>
-                            <input type="text" class="form-control" id="acc_number" name="acc_number">
+                            <input type="text" class="form-control" id="acc_number" name="acc_number" value="@foreach($supplier_payment_info as $data){{$data->account_number}}@endforeach">
                         </div>
 
                         <div class="col-md-4"></div>
@@ -435,7 +448,7 @@
 
                 </div>
 
-                <script type="text/javascript">  
+                <!--<script type="text/javascript">  
                     $("form").submit(function(e){  
                         e.preventDefault();  
 
@@ -508,16 +521,14 @@
                         $(this).parents("tr").find(".btn-update").remove();  
                     });  
                     
-                </script>
+                </script>-->
 
                 <!--supplier detail end-->
                 <!--Tab 02 end-->
 
-                <div style="overflow:auto;" id="nextprevious">
+                <div style="overflow:auto;">
                     <div style="float:right;">
-                        <button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
-                        <button type="reset">Clear</button>
-                        <button type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
+                        <button type="submit" class="btn btn-success">Update</button>
                     </div>
                 </div>
                 

@@ -7,5 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Supplier_payment_detail extends Model
 {
-    use HasFactory;
+    //use HasFactory;
+    protected $primaryKey = 'suppliers_id';
 }

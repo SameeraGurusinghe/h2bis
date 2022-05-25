@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSupplierTypesTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,9 @@ class CreateSupplierTypesTable extends Migration
      */
     public function up()
     {
-        Schema::create('supplier_types', function (Blueprint $table) {
-            $table->integer('id', true);
+        Schema::create('banks', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('bank_code', 45)->nullable();
             $table->string('name', 45)->nullable();
             $table->string('created_by', 45)->nullable();
             $table->string('created_at', 45)->nullable();
@@ -32,6 +33,6 @@ class CreateSupplierTypesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('supplier_types');
+        Schema::dropIfExists('banks');
     }
-}
+};
