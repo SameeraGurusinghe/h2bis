@@ -105,8 +105,8 @@ class LogAuthController extends Controller
             $supplier_Payment_Information->suppliers_id = $supplierInformation->id;
             $supplier_Payment_Information->save();
             
-            //return redirect()->action([LogAuthController::class,"index"]);
-            return redirect("index")->with('message','Supplier create successful.');
+            return redirect()->action([LogAuthController::class,"index"]);
+            //return redirect("index")->with('message','Supplier create successful.');
     }
 
     function editSupplier($id){
@@ -184,7 +184,8 @@ class LogAuthController extends Controller
             
             //return redirect()->action([LogAuthController::class,"/index"]);
             //return redirect("./index");
-            return view("index");
+            //return view("index");
+            return redirect()->action([LogAuthController::class,"index"]);
     }
 
     function doLogin(Request $request)
@@ -242,7 +243,8 @@ class LogAuthController extends Controller
         $supplier_id = Supplier_address::find($id)->delete();
         $supplier_id = Supplier_bank_detail::find($id)->delete();
         $supplier_id = Supplier_payment_detail::find($id)->delete();
-        return route("supplier.index");
+        //return route("supplier.index");
+        return redirect()->action([LogAuthController::class,"index"]);
     }
 
     function logout()
