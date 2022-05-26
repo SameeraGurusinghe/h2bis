@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Supplier_type;
 use App\Models\Country;
+use App\Models\State;
 use App\Models\Bank;
 use App\Models\Branch;
 use App\Models\Supplier;
@@ -35,6 +36,16 @@ class LogAuthController extends Controller
         ->with('bank_name', Bank::all())
         ->with('branch_name', Branch::all())
         ->with('supplier_info', Supplier::all());
+    }
+
+    public function getState(Request $request){
+        $country_id=$request->post('id');
+        $country_name=State::where('countries_id',$country_id)->get();
+        $html='<option value="">Select</option>';
+        foreach($country_name as $list){
+            $html.='<option value="'.$list->name.'">'.$list->name.'</option>';
+        }
+        echo $html;
     }
     
     function makeSupplier(Request $request)

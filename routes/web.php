@@ -34,3 +34,6 @@ Route::get('/supplier/create-supplier', [LogAuthController::class,"supplierView"
 Route::post('/supplier/make-a-supplier', [LogAuthController::class,"makeSupplier"]);
 Route::post('/do-login', [LogAuthController::class,"doLogin"]);
 Route::post('/do-register', [LogAuthController::class,"doRegister"]);
+
+Route::post('/getState', [LogAuthController::class,'getState']);
+//Route::post('/getMainAccountsName', [AuthController::class,'getMainAccountsName']);

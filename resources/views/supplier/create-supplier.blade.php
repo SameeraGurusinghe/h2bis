@@ -258,9 +258,9 @@
                             <label class="col-md-5 col-form-label" style="font-size:16px;">Country:</label>
                             <div class="col-md-7">
                                 <select class="form-control" id="add_6_1" name="country">
-                                    <option selected>Sri Lanka</option>
+                                    <option value="" selected>Select</option>
                                     @foreach($countrycode as $data)
-                                    <option value="{{$data->nicename}}">{{$data->nicename}}</option>
+                                    <option value="{{$data->id}}">{{$data->nicename}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -269,7 +269,9 @@
                         <div class="form-group row">
                             <label class="col-md-5 col-form-label" style="font-size:16px;">State/ Province:</label>
                             <div class="col-md-7">
-                                <input type="text" class="form-control" id="add_7_1" name="state_province">
+                                <select class="form-control" id="add_7_1" name="state_province">
+                                    <option value="">Select</option>
+                                </select>
                                 <input type="hidden" name="billing" value="1">
                             </div>
                         </div>
@@ -323,14 +325,21 @@
                         <div class="form-group row">
                             <label class="col-md-5 col-form-label" style="font-size:16px;">Country:</label>
                             <div class="col-md-7">
-                            <input type="text" class="form-control" id="add_6_2" name="s_country">
+                                <select class="form-control" id="add_6_2" name="s_country">
+                                    <option value="" selected>Select</option>
+                                    @foreach($countrycode as $data)
+                                    <option value="{{$data->id}}">{{$data->nicename}}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div><br>
 
                         <div class="form-group row">
                             <label class="col-md-5 col-form-label" style="font-size:16px;">State/ Province:</label>
                             <div class="col-md-7">
-                                <input type="text" class="form-control" id="add_7_2" name="s_state_province">
+                                <select class="form-control" id="add_7_2" name="s_state_province">
+                                    <option value="">Select</option>
+                                </select>
                                 <input type="hidden" name="s_shipping" value="2">
                             </div>
                         </div>
@@ -529,6 +538,38 @@
       </div>
     </div>
   </div>
-    
+
+<script>
+jQuery(document).ready(function(){
+  jQuery('#add_6_1').change(function(){
+    let id=jQuery(this).val();
+    jQuery.ajax({
+      url:'/getState',
+      type:'post',
+      data:'id='+id+'&_token={{csrf_token()}}',
+      success:function(result){
+        jQuery('#add_7_1').html(result)
+      }
+    });
+  });
+});
+</script>
+
+<script>
+jQuery(document).ready(function(){
+  jQuery('#add_6_2').change(function(){
+    let id=jQuery(this).val();
+    jQuery.ajax({
+      url:'/getState',
+      type:'post',
+      data:'id='+id+'&_token={{csrf_token()}}',
+      success:function(result){
+        jQuery('#add_7_2').html(result)
+      }
+    });
+  });
+});
+</script>
+
 </body>
 </html>
